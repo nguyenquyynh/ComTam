@@ -54,6 +54,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.comtam.R
+import com.example.comtam.ShareValue
 import com.example.comtam.commond.ShowlistMain
 import com.example.comtam.models.Feedback
 import com.example.comtam.models.Product
@@ -61,9 +62,11 @@ import java.io.Serializable
 
 
 class Home {
-    @Preview(showBackground = true)
+
     @Composable
-    fun Container () {
+    fun Container (gotoScreen : (String) -> Unit,
+                   shareValue : ShareValue
+    ) {
         var list by remember { mutableStateOf(
             mutableListOf(
                 Product(
@@ -142,7 +145,7 @@ class Home {
                     trailingIcon = {
                         Image(painter = painterResource(id = R.drawable.search),
                             contentDescription = "",
-                            modifier = Modifier.size(35.dp))
+                            modifier = Modifier.size(24.dp))
                     }
                 )
             }
