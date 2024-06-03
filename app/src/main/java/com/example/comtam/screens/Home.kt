@@ -156,11 +156,11 @@ class Home {
                 item {
                     Column{
 
-                        ShowlistMain(list, context)
+                        ShowlistMain(list, context ,"a")
 
-                        ShowlistMain(list, context)
+                        ShowlistMain(list, context, "a")
 
-                        ShowlistMain(list, context)
+                        ShowlistMain(list, context, "a")
                         
                     }
                 }
