@@ -67,7 +67,7 @@ class Detail {
                     "https://cdn.pixabay.com/photo/2018/04/07/15/03/pizza-3298685_1280.jpg",
                     "https://cdn.pixabay.com/photo/2020/04/29/03/30/pizza-5107039_1280.jpg"
                 ),
-                "lorem is sum...................",
+                "Brown the beef better. Lean ground beef – I like to use 85% lean angus. Garlic – use fresh  chopped. Spices – chili powder, cumin, onion powder.",
                 12.4,
                 3.5,
                 "Free delivery",
@@ -78,7 +78,7 @@ class Detail {
             )
         val pagestate = rememberPagerState()
         fun addQuantity(value: Int) {
-            if (quantity + value >= 1 && quantity + value <= shareValue.product?.quantity!!) {
+            if (quantity + value > 0 && quantity + value <= product.quantity!!) {
                 quantity += value
             }
         }
@@ -211,6 +211,9 @@ class Detail {
                                     .clickable { addQuantity(1) })
                         }
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(text = "${product.description}", fontSize = 14.sp, color = TextGray, lineHeight = 15.sp)
+
                 }
             }
             //Add cart container
