@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,10 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
@@ -39,7 +39,6 @@ import coil.request.ImageRequest
 import com.example.comtam.R
 import coil.size.Size
 import com.example.comtam.ShareValue
-import com.example.comtam.models.Feedback
 import com.example.comtam.models.Product
 import com.example.comtam.ui.theme.Green
 import com.example.comtam.ui.theme.Orange
@@ -100,14 +99,12 @@ class Detail {
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(20.dp)
-        ) {
+                .padding(20.dp)) {
             //Content conatiner
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .weight(8f)
-            ) {
+                    .weight(8f)) {
                 //Button container
                 Row {
                     //Button back
@@ -134,8 +131,7 @@ class Detail {
                                 contentScale = ContentScale.Crop,
                             )
                         }
-                        HorizontalPagerIndicator(
-                            pagerState = pagestate,
+                        HorizontalPagerIndicator(pagerState = pagestate,
                             activeColor = Orange,
                             indicatorWidth = 15.dp,
                             indicatorHeight = 7.dp,
@@ -150,22 +146,14 @@ class Detail {
                     Spacer(modifier = Modifier.height(20.dp))
                     //Product name
                     if (product != null) {
-                        product.name?.let {
-                            Text(
-                                text = it,
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight.ExtraBold
-                            )
-                        }
+                        product.name?.let { Text(text = it, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold) }
                     }
                     Spacer(modifier = Modifier.height(15.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp),
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                        horizontalArrangement = Arrangement.SpaceBetween) {
                         //Evaluate
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -178,11 +166,7 @@ class Detail {
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(text = "${product?.evaluate}", fontWeight = FontWeight.ExtraBold)
                             Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = "(${product?.quantity}+)",
-                                fontSize = 14.sp,
-                                color = TextGray
-                            )
+                            Text(text = "(${product?.quantity}+)", fontSize = 14.sp, color = TextGray)
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Image(
@@ -203,19 +187,14 @@ class Detail {
                             Text(text = "${product?.time}", color = TextGray, fontSize = 14.sp)
                         }
                     }
-                    Row(
+                    Row (
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(10.dp)
                     ) {
-                        Text(
-                            text = "${product?.price} $",
-                            color = Green,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.ExtraBold
-                        )
+                        Text(text = "${product?.price} $", color = Green, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                         Row {
                             Image(painter = painterResource(id = R.drawable.minus),
                                 contentDescription = "",
@@ -223,11 +202,7 @@ class Detail {
                                     .size(30.dp)
                                     .clickable { addQuantity(-1) })
                             Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = "${quantity}",
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight.Light
-                            )
+                            Text(text = "${quantity}", fontSize = 22.sp, fontWeight = FontWeight.Light)
                             Spacer(modifier = Modifier.width(10.dp))
                             Image(painter = painterResource(id = R.drawable.plus),
                                 contentDescription = "",
@@ -237,17 +212,8 @@ class Detail {
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        text = "${product.description}",
-                        fontSize = 14.sp,
-                        color = TextGray,
-                        lineHeight = 15.sp
-                    )
-                    LazyRow {
-                        items(product.feedback!!) {
-                            renderFeedback(it)
-                        }
-                    }
+                    Text(text = "${product.description}", fontSize = 14.sp, color = TextGray, lineHeight = 15.sp)
+
                 }
             }
             //Add cart container
@@ -255,31 +221,8 @@ class Detail {
                 Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .background(Color.Red)
-            ) {}
-        }
-    }
+                    .background(Color.Red)) {
 
-    @Composable
-    fun renderFeedback(item: Feedback) {
-        Column {
-            Row {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "",
-                    Modifier.size(38.dp)
-                )
-                Column {
-                    Text(text = "${item.name}")
-                    Text(text = "Rank Gold")
-                }
-                Text(text = "${item.createdAt}")
-                Text(text = "${item.evaluate}")
-                Image(
-                    painter = painterResource(id = R.drawable.edit),
-                    contentDescription = "",
-                    Modifier.size(24.dp)
-                )
             }
         }
     }
