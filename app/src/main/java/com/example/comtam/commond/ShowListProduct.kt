@@ -35,11 +35,17 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.comtam.R
 import com.example.comtam.models.Product
+import com.example.comtam.ui.theme.Green
 
 @Composable
-fun ShowlistMain(list: MutableList<Product>, context: Context) {
+fun ShowlistMain(list: MutableList<Product>, context: Context, title: String) {
     Column {
-        Text(text = "aaaa")
+        Row(horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()) {
+            Text(text = "${title}", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "See All", fontSize = 12.sp, fontWeight = FontWeight.Normal, color = Green)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -100,7 +106,7 @@ fun RenderItemfood(item: Product, context: Context){
                         Row(
                             modifier = Modifier
                                 .padding(7.dp),
-                            verticalAlignment = Alignment.Bottom
+                            verticalAlignment = Alignment.Bottom,
                         ){
                             Text(text = item.evaluate.toString(),
                                 fontSize = 12.sp,
@@ -122,10 +128,8 @@ fun RenderItemfood(item: Product, context: Context){
                         }
                     }
 
-                    Box(modifier = Modifier
-                        .width(58.dp)
-                        .height(48.dp)
-                        .padding(vertical = 10.dp, horizontal = 16.dp)
+                    Box(modifier = Modifier.size(48.dp)
+                        .padding(10.dp)
                         .background(Color.White, CircleShape)
                         .clickable {
 
@@ -136,9 +140,7 @@ fun RenderItemfood(item: Product, context: Context){
                                 id = if(item.quantity != 1) R.drawable.unheart
                                 else R.drawable.heart),
                             contentDescription = "heart",
-                            modifier = Modifier
-                                .width(23.dp)
-                                .height(23.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 }
