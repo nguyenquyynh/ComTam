@@ -222,6 +222,7 @@ class Detail {
                     .weight(1f)
                     .fillMaxWidth()
                     .background(Color.Red)) {}
+            Text(text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         }
     }
 }
