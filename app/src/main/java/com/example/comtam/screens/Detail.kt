@@ -221,8 +221,9 @@ class Detail {
                 Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .background(Color.Red)) {}
-            Text(text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                    .background(Color.Red)) {
+
+            }
         }
     }
 }
