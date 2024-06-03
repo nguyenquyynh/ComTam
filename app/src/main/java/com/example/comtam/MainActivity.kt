@@ -51,8 +51,8 @@ class MainActivity : ComponentActivity() {
         fun readShare(): User {
             val sharePref = getSharedPreferences("user", MODE_PRIVATE)
             return User(
-                null,
-                null,
+                sharePref.getString("id", null)?.toInt(),
+                sharePref.getString("name", null),
                 sharePref.getString("email", null),
                 sharePref.getString("password", null)
             )
@@ -61,6 +61,8 @@ class MainActivity : ComponentActivity() {
         fun writeShare(user: User) {
             val sharePref = getSharedPreferences("user", MODE_PRIVATE)
             with(sharePref.edit()) {
+                putString("id", user.id.toString())
+                putString("name", user.name)
                 putString("email", user.email)
                 putString("password", user.password)
                 apply()
@@ -69,7 +71,7 @@ class MainActivity : ComponentActivity() {
         }
         NavHost(
             navController = navController,
-            startDestination = "login"
+            startDestination = "detail"
         ) {
 
             composable("login") {

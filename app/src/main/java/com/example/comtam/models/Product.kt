@@ -9,7 +9,7 @@ data class Product (
     val evaluate: Double?,
     val ship : String?,
     val time : String?,
-    val qunatity: Int?,
+    val quantity: Int?,
     val tag : List<String>?,
     val feedback : List<Feedback>?
 )
