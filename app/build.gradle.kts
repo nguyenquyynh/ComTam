@@ -50,6 +50,9 @@ android {
 }
 
 dependencies {
+    implementation("com.google.accompanist:accompanist-pager:0.28.0") //slider indicator
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
     val nav_version = "2.7.7"
     // Java language implementation
     implementation("androidx.navigation:navigation-fragment:$nav_version")
