@@ -12,5 +12,14 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-
+    @GET("users")
+    fun loginAPI(@Query("email") e : String, @Query("password") p : String) : Call<List<User>>
+    @POST("users")
+    fun registerAPI(@Body user : User) : Call<User>
+    @GET("products")
+    fun getListProductAPI() : Call<List<Product>>
+    @GET("products/{id}")
+    fun getProductAPI(@Path("id") id : Int) : Call<Product>
+    @PUT("products/{id}")
+    fun updateProductAPI(@Path("id") id : Int, @Body product : Product) : Call<Product>
 }
