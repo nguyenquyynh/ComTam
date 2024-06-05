@@ -20,6 +20,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +34,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
@@ -38,7 +43,7 @@ import com.example.comtam.models.Product
 import com.example.comtam.ui.theme.Green
 
 @Composable
-fun ShowlistMain(list: MutableList<Product>, context: Context, title: String) {
+fun ShowlistMain(list: List<Product>?, context: Context, title: String) {
     Column {
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -50,7 +55,7 @@ fun ShowlistMain(list: MutableList<Product>, context: Context, title: String) {
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyRow {
-            items(list, key = { it.id!! }){ item ->
+            items(list!!, key = { it.id!! }){ item ->
                 RenderItemfood(item, context)
                 Spacer(modifier = Modifier.width(21.dp))
             }
@@ -63,6 +68,10 @@ fun ShowlistMain(list: MutableList<Product>, context: Context, title: String) {
 
 @Composable
 fun RenderItemfood(item: Product, context: Context){
+    var love by remember {
+        mutableStateOf(false)
+    }
+
     val painter = rememberAsyncImagePainter(
         model =  ImageRequest.Builder(context)
             .data(item.image)
@@ -80,7 +89,7 @@ fun RenderItemfood(item: Product, context: Context){
     ){
         Column {
             Box{
-                Image(painter =painter,
+                AsyncImage(model = if(!item.image.isNullOrEmpty()) item.image?.get(0) else "https://cdn.pixabay.com/photo/2023/09/25/19/58/piran-8275931_1280.jpg",
                     contentDescription = "food",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -128,16 +137,17 @@ fun RenderItemfood(item: Product, context: Context){
                         }
                     }
 
-                    Box(modifier = Modifier.size(48.dp)
+                    Box(modifier = Modifier
+                        .size(48.dp)
                         .padding(10.dp)
                         .background(Color.White, CircleShape)
                         .clickable {
-
+                            love = !love
                         },
                         contentAlignment = Alignment.Center) {
                         Image(
                             painter = painterResource(
-                                id = if(item.quantity != 1) R.drawable.unheart
+                                id = if(!love) R.drawable.unheart
                                 else R.drawable.heart),
                             contentDescription = "heart",
                             modifier = Modifier.size(20.dp)
