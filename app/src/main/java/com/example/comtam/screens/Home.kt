@@ -53,11 +53,15 @@ import androidx.core.os.bundleOf
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.example.asm.ApiClient
 import com.example.comtam.R
 import com.example.comtam.ShareValue
 import com.example.comtam.commond.ShowlistMain
 import com.example.comtam.models.Feedback
 import com.example.comtam.models.Product
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.Serializable
 
 
@@ -67,55 +71,29 @@ class Home {
     fun Container (gotoScreen : (String) -> Unit,
                    shareValue : ShareValue
     ) {
-        var list by remember { mutableStateOf(
-            mutableListOf(
-                Product(
-                    1,
-                    "McDonald’s",
-                    listOf("https://cdn.pixabay.com/photo/2020/03/28/14/51/french-fries-4977354_640.jpg"),
-                    "Free delivery",
-                    20.5,
-                    2.5,
-                    "Free delivery",
-                    "10-15 mins",
-                    120,
-                    tag = listOf("Burger","Chicken","Fast Food"),
-                    feedback = listOf(
-                        Feedback(null,null,null,null, null)
-                    ),
-                ),
-                Product(
-                    2,
-                    "McDonald’s",
-                    listOf("https://cdn.pixabay.com/photo/2020/03/28/14/51/french-fries-4977354_640.jpg"),
-                    "Free delivery",
-                    20.5,
-                    2.5,
-                    "Free delivery",
-                    "10-15 mins",
-                    120,
-                    tag = listOf("Burger","Chicken","Fast Food"),
-                    feedback = listOf(
-                        Feedback(null,null,null,null, null)
-                    ),
-                ),
-                Product(
-                    3,
-                    "McDonald’s",
-                    listOf("https://cdn.pixabay.com/photo/2020/03/28/14/51/french-fries-4977354_640.jpg"),
-                    "Free delivery",
-                    20.5,
-                    2.5,
-                    "Free delivery",
-                    "10-15 mins",
-                    120,
-                    tag = listOf("Burger","Chicken","Fast Food"),
-                    feedback = listOf(
-                        Feedback(null,null,null,null, null)
-                    ),
-                ),
-            )
+        var list : List<Product>? by remember { mutableStateOf(
+            mutableListOf()
         )}
+
+        fun getAllproduct() {
+            val call = ApiClient.apiService.getListProductAPI()
+            call.enqueue(object: Callback<List<Product>> {
+                override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
+                    if (response.isSuccessful) {
+                        val post = response.body()
+                        list = post?.toMutableList()
+                    } else {
+                        println("Error: ${response}")
+                    }
+                }
+                override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                    println("error: ${t}")
+                }
+            })
+        }
+
+        getAllproduct()
+
         val context = LocalContext.current
         var textSearch by remember { mutableStateOf("") }
 
@@ -156,12 +134,12 @@ class Home {
                 item {
                     Column{
 
-                        ShowlistMain(list, context ,"a")
+                        ShowlistMain(list, context ,"Recomment Items")
 
-                        ShowlistMain(list, context, "a")
+                        ShowlistMain(list, context, "Featured partner")
 
-                        ShowlistMain(list, context, "a")
-                        
+                        ShowlistMain(list, context, "Popular Item")
+
                     }
                 }
             }
