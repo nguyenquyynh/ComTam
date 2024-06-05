@@ -43,7 +43,7 @@ import com.example.comtam.models.Product
 import com.example.comtam.ui.theme.Green
 
 @Composable
-fun ShowlistMain(list: List<Product>?, context: Context, title: String) {
+fun ShowlistMain(list: List<Product>?, context: Context, title: String, gotoScreen : (String) -> Unit) {
     Column {
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -56,7 +56,7 @@ fun ShowlistMain(list: List<Product>?, context: Context, title: String) {
 
         LazyRow {
             items(list!!, key = { it.id!! }){ item ->
-                RenderItemfood(item, context)
+                RenderItemfood(item, context, gotoScreen = {gotoScreen(it)})
                 Spacer(modifier = Modifier.width(21.dp))
             }
         }
@@ -67,7 +67,7 @@ fun ShowlistMain(list: List<Product>?, context: Context, title: String) {
 }
 
 @Composable
-fun RenderItemfood(item: Product, context: Context){
+fun RenderItemfood(item: Product, context: Context, gotoScreen : (String) -> Unit){
     var love by remember {
         mutableStateOf(false)
     }
@@ -84,7 +84,7 @@ fun RenderItemfood(item: Product, context: Context){
             .background(Color.White, RoundedCornerShape(15.dp))
             .width(266.dp)
             .clickable {
-
+                gotoScreen("detail")
             }
     ){
         Column {

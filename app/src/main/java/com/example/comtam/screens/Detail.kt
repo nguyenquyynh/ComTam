@@ -288,12 +288,12 @@ class Detail {
                             ShowlistMain(
                                 list = list.toMutableList(),
                                 context = LocalContext.current,
-                                "Restaurant’ss Featured Partner"
+                                "Restaurant’ss Featured Partner", gotoScreen = {gotoScreen(it)}
                             )
                             ShowlistMain(
                                 list = list.toMutableList(),
                                 context = LocalContext.current,
-                                "Other Meal"
+                                "Other Meal", gotoScreen = {gotoScreen(it)}
                             )
                         }
                     }

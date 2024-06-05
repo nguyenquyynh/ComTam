@@ -3,6 +3,7 @@ package com.example.comtam.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -53,10 +54,10 @@ class Register {
     @Composable
     fun Container (gotoScreen: (String) -> Unit,
                    shareValue : ShareValue) {
-        Body()
+        Body(gotoScreen = {gotoScreen(it)})
     }
     @Composable
-    fun Body() {
+    fun Body(gotoScreen: (String) -> Unit) {
         val already = "Already have an account?"
         var name by rememberSaveable { mutableStateOf("") }
         var email by rememberSaveable {
@@ -79,6 +80,7 @@ class Register {
             ) {
                 Text(
                     text = "Create \nAccount",
+                    modifier = Modifier.clickable { gotoScreen("login") },
                     fontSize = 40.sp,
                     lineHeight = 30.sp,
                     color = Color.Black,
@@ -86,6 +88,7 @@ class Register {
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
+
                     text = buildAnnotatedString {
                         append("Enter your Email and Password to\nsign up. ")
                         withStyle(style = SpanStyle(color = Orange)) {

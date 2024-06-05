@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
         }
         NavHost(
             navController = navController,
-            startDestination = "navigation"
+            startDestination = "login"
         ) {
 
             composable("login") {

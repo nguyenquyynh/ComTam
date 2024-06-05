@@ -76,6 +76,7 @@ class Home {
         )}
 
         fun getAllproduct() {
+            println("hrererereashgfksjdyhfjlkah")
             val call = ApiClient.apiService.getListProductAPI()
             call.enqueue(object: Callback<List<Product>> {
                 override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
@@ -134,11 +135,11 @@ class Home {
                 item {
                     Column{
 
-                        ShowlistMain(list, context ,"Recomment Items")
+                        ShowlistMain(list, context ,"Recomment Items", gotoScreen = {gotoScreen(it)})
 
-                        ShowlistMain(list, context, "Featured partner")
+                        ShowlistMain(list, context, "Featured partner", gotoScreen = {gotoScreen(it)})
 
-                        ShowlistMain(list, context, "Popular Item")
+                        ShowlistMain(list, context, "Popular Item", gotoScreen = {gotoScreen(it)})
 
                     }
                 }

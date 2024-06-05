@@ -3,6 +3,7 @@ package com.example.comtam.screens
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,8 +41,10 @@ import com.example.comtam.ui.theme.WhiteTr
 
 class Login {
     @Composable
-    fun Container (gotoScreen : (String) -> Unit,
-                   shareValue : ShareValue) {
+    fun Container(
+        gotoScreen: (String) -> Unit,
+        shareValue: ShareValue
+    ) {
 
         var Email by remember {
             mutableStateOf("")
@@ -80,7 +83,9 @@ class Login {
                     Text(
                         text = "Enter your Email and Password to sign up Create new account.",
                         color = TextGray,
-                        modifier = Modifier.fillMaxWidth(0.8f)
+                        modifier = Modifier
+                            .clickable { gotoScreen("register") }
+                            .fillMaxWidth(0.8f)
                             .padding(bottom = 30.dp, top = 20.dp)
                     )
 
@@ -106,7 +111,9 @@ class Login {
                                     Image(
                                         painter = painterResource(id = R.drawable.sms),
                                         contentDescription = "user",
-                                        modifier = Modifier.height(20.dp).width(20.dp)
+                                        modifier = Modifier
+                                            .height(20.dp)
+                                            .width(20.dp)
                                     )
                                 },
                             )
@@ -133,7 +140,9 @@ class Login {
                                     Image(
                                         painter = painterResource(id = R.drawable.key),
                                         contentDescription = "user",
-                                        modifier = Modifier.height(20.dp).width(20.dp)
+                                        modifier = Modifier
+                                            .height(20.dp)
+                                            .width(20.dp)
                                     )
                                 },
                             )
@@ -152,9 +161,10 @@ class Login {
                             ),
 
                         onClick = {
-//                            context.startActivity(Intent(context,SignUpActivity::class.java))
+                            gotoScreen("register")
                         }) {
-                        Text(text = "Forgot Password ? ",
+                        Text(
+                            text = "Forgot Password ? ",
                             color = Blue,
                             fontSize = 18.sp,
                         )
@@ -170,9 +180,8 @@ class Login {
                                 Orange,
                                 shape = MaterialTheme.shapes.small
                             ),
-
                         onClick = {
-//                        context.startActivity(Intent(context,LoginActivity::class.java))
+                            gotoScreen("navigation")
                         }) {
                         Text(
                             text = "Log in",
