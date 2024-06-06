@@ -135,11 +135,11 @@ class Home {
                 item {
                     Column{
 
-                        ShowlistMain(list, context ,"Recomment Items", gotoScreen = {gotoScreen(it)})
+                        ShowlistMain(list, context ,"Recomment Items", gotoScreen = {gotoScreen(it)}, shareValue= shareValue)
 
-                        ShowlistMain(list, context, "Featured partner", gotoScreen = {gotoScreen(it)})
+                        ShowlistMain(list, context, "Featured partner", gotoScreen = {gotoScreen(it)}, shareValue= shareValue)
 
-                        ShowlistMain(list, context, "Popular Item", gotoScreen = {gotoScreen(it)})
+                        ShowlistMain(list, context, "Popular Item", gotoScreen = {gotoScreen(it)}, shareValue= shareValue)
 
                     }
                 }
