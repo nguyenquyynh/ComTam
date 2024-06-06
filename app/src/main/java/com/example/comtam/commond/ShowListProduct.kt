@@ -39,11 +39,12 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.comtam.R
+import com.example.comtam.ShareValue
 import com.example.comtam.models.Product
 import com.example.comtam.ui.theme.Green
 
 @Composable
-fun ShowlistMain(list: List<Product>?, context: Context, title: String, gotoScreen : (String) -> Unit) {
+fun ShowlistMain(list: List<Product>?, context: Context, title: String, gotoScreen : (String) -> Unit, shareValue : ShareValue) {
     Column {
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -56,7 +57,7 @@ fun ShowlistMain(list: List<Product>?, context: Context, title: String, gotoScre
 
         LazyRow {
             items(list!!, key = { it.id!! }){ item ->
-                RenderItemfood(item, context, gotoScreen = {gotoScreen(it)})
+                RenderItemfood(item, context, gotoScreen = {gotoScreen(it)}, shareValue = shareValue)
                 Spacer(modifier = Modifier.width(21.dp))
             }
         }
@@ -67,7 +68,7 @@ fun ShowlistMain(list: List<Product>?, context: Context, title: String, gotoScre
 }
 
 @Composable
-fun RenderItemfood(item: Product, context: Context, gotoScreen : (String) -> Unit){
+fun RenderItemfood(item: Product, context: Context, gotoScreen : (String) -> Unit, shareValue : ShareValue){
     var love by remember {
         mutableStateOf(false)
     }
@@ -84,6 +85,7 @@ fun RenderItemfood(item: Product, context: Context, gotoScreen : (String) -> Uni
             .background(Color.White, RoundedCornerShape(15.dp))
             .width(266.dp)
             .clickable {
+                shareValue.product = item
                 gotoScreen("detail")
             }
     ){
