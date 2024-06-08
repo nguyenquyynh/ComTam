@@ -20,6 +20,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,22 +34,30 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.comtam.R
+import com.example.comtam.ShareValue
 import com.example.comtam.models.Product
+import com.example.comtam.ui.theme.Green
 
 @Composable
-fun ShowlistMain(list: MutableList<Product>, context: Context) {
+fun ShowlistMain(list: List<Product>?, context: Context, title: String, gotoScreen : (String) -> Unit, shareValue : ShareValue) {
     Column {
-        Text(text = "aaaa")
+        Row(horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()) {
+            Text(text = "${title}", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "See All", fontSize = 12.sp, fontWeight = FontWeight.Normal, color = Green)
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyRow {
-            items(list, key = { it.id!! }){ item ->
-                RenderItemfood(item, context)
+            items(list!!, key = { it.id!! }){ item ->
+                RenderItemfood(item, context, gotoScreen = {gotoScreen(it)}, shareValue = shareValue)
                 Spacer(modifier = Modifier.width(21.dp))
             }
         }
@@ -56,7 +68,11 @@ fun ShowlistMain(list: MutableList<Product>, context: Context) {
 }
 
 @Composable
-fun RenderItemfood(item: Product, context: Context){
+fun RenderItemfood(item: Product, context: Context, gotoScreen : (String) -> Unit, shareValue : ShareValue){
+    var love by remember {
+        mutableStateOf(false)
+    }
+
     val painter = rememberAsyncImagePainter(
         model =  ImageRequest.Builder(context)
             .data(item.image)
@@ -69,12 +85,13 @@ fun RenderItemfood(item: Product, context: Context){
             .background(Color.White, RoundedCornerShape(15.dp))
             .width(266.dp)
             .clickable {
-
+                shareValue.product = item
+                gotoScreen("detail")
             }
     ){
         Column {
             Box{
-                Image(painter =painter,
+                AsyncImage(model = if(!item.image.isNullOrEmpty()) item.image?.get(0) else "https://cdn.pixabay.com/photo/2023/09/25/19/58/piran-8275931_1280.jpg",
                     contentDescription = "food",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -100,7 +117,7 @@ fun RenderItemfood(item: Product, context: Context){
                         Row(
                             modifier = Modifier
                                 .padding(7.dp),
-                            verticalAlignment = Alignment.Bottom
+                            verticalAlignment = Alignment.Bottom,
                         ){
                             Text(text = item.evaluate.toString(),
                                 fontSize = 12.sp,
@@ -123,22 +140,19 @@ fun RenderItemfood(item: Product, context: Context){
                     }
 
                     Box(modifier = Modifier
-                        .width(58.dp)
-                        .height(48.dp)
-                        .padding(vertical = 10.dp, horizontal = 16.dp)
+                        .size(48.dp)
+                        .padding(10.dp)
                         .background(Color.White, CircleShape)
                         .clickable {
-
+                            love = !love
                         },
                         contentAlignment = Alignment.Center) {
                         Image(
                             painter = painterResource(
-                                id = if(item.quantity != 1) R.drawable.unheart
+                                id = if(!love) R.drawable.unheart
                                 else R.drawable.heart),
                             contentDescription = "heart",
-                            modifier = Modifier
-                                .width(23.dp)
-                                .height(23.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 }
