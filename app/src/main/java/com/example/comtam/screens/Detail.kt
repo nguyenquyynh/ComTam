@@ -364,22 +364,26 @@ class Detail {
                     )
                 }
                 Spacer(modifier = Modifier.width(10.dp))
-                Box(
-                    modifier = Modifier
-                        .background(
-                            Color.Transparent,
-                            shape = RoundedCornerShape(10.dp)
-                        )
-                        .border(1.dp, Color.Gray, shape = RoundedCornerShape(10.dp))
-                        .size(60.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.warning),
-                        contentDescription = "",
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    Color.Transparent,
+                                    shape = RoundedCornerShape(10.dp)
+                                )
+                                .border(1.dp, Color.Gray, shape = RoundedCornerShape(10.dp))
+                                .size(60.dp)
+                                .clickable {
+                                    shareValue.product = product
+                                    gotoScreen("feedback")
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.warning),
+                                contentDescription = "",
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
             }
         }
     }
