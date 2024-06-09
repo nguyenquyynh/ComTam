@@ -1,6 +1,7 @@
 package com.example.comtam.screens
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,27 +31,37 @@ import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.asm.ApiClient
 import com.example.comtam.R
 import com.example.comtam.ShareValue
+import com.example.comtam.models.User
 import com.example.comtam.ui.theme.Orange
 import com.example.comtam.ui.theme.TextGray
 import com.example.comtam.ui.theme.WhiteTr
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class Login {
     @Composable
-    fun Container(
-        gotoScreen: (String) -> Unit,
-        shareValue: ShareValue
-    ) {
+    fun Container(gotoScreen: (String) -> Unit,
+                  shareValue: ShareValue,
+                  writeShare:(user: User) -> Unit){
+        val context = LocalContext.current
 
-        var Email by remember {
-            mutableStateOf("")
+        var email by remember {
+            mutableStateOf("Jazmyne.Kerluke@hotmail.com")
         }
-        var Password by remember {
-            mutableStateOf("")
+        var password by remember {
+            mutableStateOf("tqQqbIYJIuHY80J")
         }
         Box(
             modifier = Modifier.run {
@@ -80,14 +91,23 @@ class Login {
                         color = Black,
                         fontSize = 36.sp,
                     )
-                    Text(
-                        text = "Enter your Email and Password to sign up Create new account.",
-                        color = TextGray,
-                        modifier = Modifier
-                            .clickable { gotoScreen("register") }
-                            .fillMaxWidth(0.8f)
-                            .padding(bottom = 30.dp, top = 20.dp)
-                    )
+
+                    Text(text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(
+                            color = TextGray,
+                            fontSize =14.sp
+                        )
+                        ){
+                            append("Enter your Email and Password to login,\n or ")
+                        }
+                        withStyle(style = SpanStyle(
+                            color = Orange,
+                            fontSize =14.sp
+                        )
+                        ){
+                            append("Create new account.")
+                        }
+                    }, modifier = Modifier.clickable { gotoScreen("register") })
 
 
 
@@ -96,8 +116,8 @@ class Login {
                             modifier = Modifier.padding(horizontal = 1.dp)
                         ) {
                             OutlinedTextField(
-                                value = Email,
-                                onValueChange = { Email = it },
+                                value = email,
+                                onValueChange = { email = it },
                                 label = { Text(text = "Email") },
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.White,
@@ -125,8 +145,8 @@ class Login {
                             modifier = Modifier.padding(horizontal = 1.dp)
                         ) {
                             OutlinedTextField(
-                                value = Password,
-                                onValueChange = { Password = it },
+                                value = password,
+                                onValueChange = { password = it },
                                 label = { Text(text = "Password") },
                                 colors = TextFieldDefaults.colors(
                                     focusedContainerColor = Color.White,
@@ -181,7 +201,29 @@ class Login {
                                 shape = MaterialTheme.shapes.small
                             ),
                         onClick = {
-                            gotoScreen("navigation")
+                            try {
+                                val call = ApiClient.apiService.loginAPI(email.trim(),password.trim())
+                                call.enqueue(object : Callback<List<User>> {
+                                    override fun onResponse(
+                                        call: Call<List<User>>,
+                                        response: Response<List<User>>
+                                    ){
+                                        if (response.isSuccessful && response.body()!!.size ==1){
+                                            Toast.makeText(context,"Đăng nhập thành công", Toast.LENGTH_SHORT).show()
+                                            gotoScreen("navigation")
+                                            shareValue.user = response.body()!!.get(0)
+                                            writeShare(response.body()!!.get(0))
+                                        }else{
+                                            println("Error :${response}")
+                                        }
+                                    }
+                                    override  fun onFailure(call: Call<List<User>>, t:Throwable){
+                                        println("Error: ${t}")
+                                    }
+                                })
+                            }catch (e :Exception){
+                                Toast.makeText(context,"lỗi" , Toast.LENGTH_SHORT).show()
+                            }
                         }) {
                         Text(
                             text = "Log in",

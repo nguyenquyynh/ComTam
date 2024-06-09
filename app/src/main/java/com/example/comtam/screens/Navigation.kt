@@ -23,11 +23,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.comtam.R
 import com.example.comtam.ShareValue
 import com.example.comtam.models.BottomNavigationItem
+import com.example.comtam.models.User
 
 class Navigation {
     @Composable
     fun Container (gotoScreen : (String) -> Unit,
-                   shareValue : ShareValue) {
+                   shareValue : ShareValue,
+                   writeShare:(user: User) -> Unit) {
 
         val HomeScreen = Home()
         val FavoriteScreen= Favorite()
@@ -92,7 +94,7 @@ class Navigation {
                 composable("favorite") {  FavoriteScreen.Container(gotoScreen = {gotoScreen(it)}, shareValue = shareValue)}
                 composable("address") {  AddressScreen.Container(gotoScreen = {gotoScreen(it)}, shareValue = shareValue)}
                 composable("store") {StoreScreen.Container(gotoScreen = {gotoScreen(it)}, shareValue = shareValue)}
-                composable("cart") {CartScreen.Container(gotoScreen = {gotoScreen(it)}, shareValue = shareValue)}
+                composable("cart") {CartScreen.Container(gotoScreen = {gotoScreen(it)}, shareValue = shareValue,writeShare={writeShare(it)})}
             }
         }
     }
