@@ -50,14 +50,22 @@ class MainActivity : ComponentActivity() {
 
         fun readShare(): User {
             val sharePref = getSharedPreferences("user", MODE_PRIVATE)
+            shareValue.user = User(
+                sharePref.getString("id", null)?.toIntOrNull(),
+                sharePref.getString("name", null),
+                sharePref.getString("email", null),
+                sharePref.getString("password", null)
+            )
+
             return User(
-                sharePref.getString("id", null)?.toInt(),
+                sharePref.getString("id", null)?.toIntOrNull(),
                 sharePref.getString("name", null),
                 sharePref.getString("email", null),
                 sharePref.getString("password", null)
             )
         }
         var userInfo by remember { mutableStateOf(readShare()) }
+
         fun writeShare(user: User) {
             val sharePref = getSharedPreferences("user", MODE_PRIVATE)
             with(sharePref.edit()) {
@@ -69,15 +77,15 @@ class MainActivity : ComponentActivity() {
             }
             userInfo = user
         }
-        NavHost(
-            navController = navController,
-            startDestination = "login"
-        ) {
+
+        NavHost(navController = navController,
+            startDestination = if(userInfo.email.isNullOrEmpty()) "login" else "navigation" ) {
 
             composable("login") {
                 loginScreen.Container(
-                    gotoScreen = { gotoScreen(it) },
+                    gotoScreen = {gotoScreen(it)},
                     shareValue = shareValue,
+                    writeShare = {writeShare(it)}
                 )
             }
             composable("register") {
@@ -90,6 +98,7 @@ class MainActivity : ComponentActivity() {
                 navigationScreen.Container(
                     gotoScreen = { gotoScreen(it) },
                     shareValue = shareValue,
+                    writeShare = {writeShare(it)}
                 )
             }
             composable("detail") {
