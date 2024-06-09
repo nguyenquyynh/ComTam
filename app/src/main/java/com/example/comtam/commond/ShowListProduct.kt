@@ -218,7 +218,7 @@ fun RenderItemfood(item: Product, context: Context, gotoScreen : (String) -> Uni
 
                 if(item.tag?.size!! > 0){
                     LazyRow {
-                        items(item.tag){data ->
+                        items(item.tag!!){ data ->
                             Box(
                                 modifier = Modifier
                                     .background(Color(0xFFF6F6F6), RoundedCornerShape(5.dp))
