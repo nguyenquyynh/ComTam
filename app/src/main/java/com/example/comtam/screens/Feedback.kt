@@ -1,6 +1,8 @@
 package com.example.comtam.screens
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -63,12 +65,12 @@ class Feedback {
     @Composable
     fun Container (gotoScreen : (String) -> Unit,
                    shareValue : ShareValue) {
-
-        BodyReview(gotoScreen, shareValue)
+        val context = LocalContext.current
+        BodyReview(gotoScreen, shareValue,context)
     }
 }
 @Composable
-fun BodyReview(gotoScreen: (String) -> Unit, shareValue: ShareValue) {
+fun BodyReview(gotoScreen: (String) -> Unit, shareValue: ShareValue, context: Context) {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)
@@ -81,15 +83,15 @@ fun BodyReview(gotoScreen: (String) -> Unit, shareValue: ShareValue) {
                     "https://thepizzacompany.vn/images/thumbs/000/0002212_sf-cocktail-test_300.png"
                 )
             )
-            Infornation(gotoScreen, shareValue)
+            Infornation(gotoScreen, shareValue,context)
         }
     }
 }
 
 
 @Composable
-fun Infornation(gotoScreen: (String) -> Unit, shareValue: ShareValue) {
-
+fun Infornation(gotoScreen: (String) -> Unit, shareValue: ShareValue, context: Context) {
+    Log.d("sad", shareValue.user?.name.toString())
     var comment by remember { mutableStateOf(TextFieldValue("")) }
     var star by remember { mutableStateOf(false) }
     var star2 by remember { mutableStateOf(false) }
@@ -105,8 +107,8 @@ fun Infornation(gotoScreen: (String) -> Unit, shareValue: ShareValue) {
         if (call != null) {
             call.enqueue(object : Callback<Product> {
                 override fun onResponse(call: Call<Product>, response: Response<Product>) {
-                    Log.d("success","Thêm thành công")
-                    gotoScreen("detail")
+                    Toast.makeText(context,"Cảm ơn bạn đã đánh giá sản phẩm", Toast.LENGTH_SHORT).show()
+                    gotoScreen("navigation")
                 }
 
                 override fun onFailure(call: Call<Product>, t: Throwable) {
@@ -130,9 +132,9 @@ fun Infornation(gotoScreen: (String) -> Unit, shareValue: ShareValue) {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val newFeedback = Feedback(
             id = randomNumber,
-            name = "Jenifer Scarlet",
+            name = shareValue.user?.name.toString(),
             evaluate = clickCount,
-            content = "${comment.text}",
+            content = comment.text,
             createdAt = "${day}-${month}-${year}"
         )
 

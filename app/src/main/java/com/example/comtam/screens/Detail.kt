@@ -379,7 +379,7 @@ class Detail {
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.warning),
+                                painter = painterResource(id = R.drawable.feedback),
                                 contentDescription = "",
                                 modifier = Modifier.size(40.dp)
                             )
